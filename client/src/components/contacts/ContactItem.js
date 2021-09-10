@@ -5,7 +5,7 @@ import ContactContext from "../../context/contact/contactContext";
 const ContactItem = ({ contact }) => {
     const contactContext = useContext(ContactContext);
     const { name, type, email, phone, _id } = contact;
-
+    //Error was here
     const onDelete = () => {
         contactContext.deleteContact(_id);
         contactContext.clearCurrent();
