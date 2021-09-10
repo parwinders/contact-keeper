@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import Contacts from "../contacts/Contacts";
 import ContactForm from "../contacts/ContactForm";
 import ContactFilter from "../contacts/ContactFilter";
-
+import Spinner from "../../utils/Spinner";
 import AuthContext from "../../context/auth/authContext";
 
 const Home = () => {
@@ -14,7 +14,9 @@ const Home = () => {
         //eslint-disable-next-line
     }, []);
 
-    return (
+    return !isAuth ? (
+        <Spinner />
+    ) : (
         <div className='grid-2'>
             <div>
                 <ContactForm />
