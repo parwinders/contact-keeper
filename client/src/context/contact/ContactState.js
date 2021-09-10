@@ -14,6 +14,7 @@ import {
     FILTER_CONTACTS,
     CLEAR_FILTER,
     CONTACT_ERROR,
+    CLEAR_CONTACTS,
 } from "../types.js";
 
 const ContactState = (props) => {
@@ -52,24 +53,44 @@ const ContactState = (props) => {
         }
     };
 
-    //"DELETE_CONTACT";
-    const deleteContact = (id) => {
-        dispatch({ type: DELETE_CONTACT, payload: id });
+    // UPDATE_CONTACT
+    const updateContact = async (contact) => {
+        const config = {
+            Headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        try {
+            const res = await axios.put(
+                `/api/contacts/${contact["_id"]}`,
+                contact,
+                config
+            );
+            dispatch({ type: UPDATE_CONTACT, payload: res.data["_id"] });
+        } catch (err) {
+            dispatch({ type: CONTACT_ERROR, payload: err.response.msg });
+        }
     };
 
-    //SET_CURRENT";
+    // DELETE_CONTACT
+    const deleteContact = async (_id) => {
+        console.log("deleting _id", _id);
+        try {
+            await axios.delete(`/api/contacts/${_id}`);
+            dispatch({ type: DELETE_CONTACT, payload: _id });
+        } catch (err) {
+            dispatch({ type: CONTACT_ERROR, payload: err.response.msg });
+        }
+    };
+
+    // SET_CURRENT"
     const setCurrent = (contact) => {
         dispatch({ type: SET_CURRENT, payload: contact });
         console.log("SET_CURRENT", contact);
     };
     //"CLEAR_CURRENT";
-    const clearCurrent = (contact) => {
+    const clearCurrent = () => {
         dispatch({ type: CLEAR_CURRENT });
-    };
-
-    // "UPDATE_CONTACT";
-    const updateContact = (contact) => {
-        dispatch({ type: UPDATE_CONTACT, payload: contact });
     };
 
     // "FILTER_CONTACT";
@@ -81,6 +102,12 @@ const ContactState = (props) => {
     const clearFilter = (text) => {
         dispatch({ type: CLEAR_FILTER });
     };
+
+    // CLEAR_CONTACTS
+    const clearContacts = () => {
+        dispatch({ type: CLEAR_CONTACTS });
+    };
+
     //SET_ALERT";
 
     //REMOVE_ALERT";
@@ -101,6 +128,7 @@ const ContactState = (props) => {
                 clearFilter,
                 filterContacts,
                 getContacts,
+                clearContacts,
             }}
         >
             {props.children}
