@@ -31,7 +31,7 @@ export default (state, action) => {
                 token: null,
                 loading: false,
                 user: null,
-                error: action.payload,
+                error: action.payload || null,
             };
         case CLEAR_ERRORS:
             return { ...state, error: null };

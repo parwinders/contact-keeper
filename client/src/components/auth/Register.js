@@ -6,12 +6,13 @@ import AuthContext from "../../context/auth/authContext";
 const Register = (props) => {
     const alertContext = useContext(AlertContext);
     const authContext = useContext(AuthContext);
-    const { register, error, clearErrors, isAuth } = authContext;
+    const { register, error, clearErrors, isAuth, loadUser } = authContext;
     const { setAlert } = alertContext;
 
-    useEffect(() => {
+    useEffect(async () => {
+        await loadUser;
         if (isAuth) {
-            props.history.push("/", { vin: "awesome" });
+            props.history.push("/");
         }
         if (error) setAlert("danger", error);
         clearErrors();

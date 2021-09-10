@@ -9,7 +9,7 @@ const Navbar = ({ title, icon }) => {
     const { isAuth, logout, user } = authContext;
     const onLogout = () => {
         logout();
-    }
+    };
     const authLinks = (
         <Fragment>
             <li>Hello {user && user.name}</li>
@@ -37,9 +37,7 @@ const Navbar = ({ title, icon }) => {
             <h1>
                 <i className={icon} /> {title}
             </h1>
-            <ul>
-                {isAuth ? authLinks : guestLinks} 
-            </ul>
+            <ul>{isAuth ? authLinks : guestLinks}</ul>
         </div>
     );
 };

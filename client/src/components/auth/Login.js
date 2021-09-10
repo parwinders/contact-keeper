@@ -6,18 +6,21 @@ import AlertContext from "../../context/alert/alertContext";
 const Login = (props) => {
     const alertContext = useContext(AlertContext);
     const authContext = useContext(AuthContext);
-    const { login, error, clearErrors, isAuth } = authContext;
+    const { login, error, clearErrors, isAuth, loadUser } = authContext;
     const { setAlert } = alertContext;
 
     useEffect(() => {
-        if (isAuth) {
-            console.log("already Authenticated redirect to /");
-            props.history.push("/");
-        }
-        if (error) {
-            setAlert("danger", error);
-            clearErrors();
-        }
+        (async () => {
+            await loadUser();
+            if (isAuth) {
+                console.log("already Authenticated redirect to /");
+                props.history.push({ pathname: "/", state: "parwinder" });
+            }
+            if (error) {
+                setAlert("danger", error);
+                clearErrors();
+            }
+        })();
         //eslint-disable-next-line
     }, [isAuth, error]);
 

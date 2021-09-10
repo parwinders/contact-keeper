@@ -15,9 +15,7 @@ import AlertState from "./context/alert/AlertState";
 import setAuthToken from "./utils/setAuthToken";
 import PrivateRoute from "./components/routing/PrivateRoute";
 
-if (localStorage.token) {
-    setAuthToken(localStorage.token);
-}
+setAuthToken(localStorage.token);
 const App = () => (
     <AuthState>
         <ContactState>

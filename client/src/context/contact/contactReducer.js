@@ -1,25 +1,36 @@
-export const ADD_CONTACT = "ADD_CONTACT";
-export const DELETE_CONTACT = "DELETE_CONTACT";
-export const SET_CURRENT = "SET_CURRENT";
-export const CLEAR_CURRENT = "CLEAR_CURRENT";
-export const UPDATE_CONTACT = "UPDATE_CONTACT";
-export const FILTER_CONTACTS = "FILTER_CONTACTS";
-export const CLEAR_FILTER = "CLEAR_FILTER";
-export const SET_ALERT = "SET_ALERT";
-export const REMOVE_ALERT = "REMOVE_ALERT";
+import {
+    ADD_CONTACT,
+    DELETE_CONTACT,
+    SET_CURRENT,
+    CLEAR_CURRENT,
+    UPDATE_CONTACT,
+    FILTER_CONTACTS,
+    CLEAR_FILTER,
+    SET_ALERT,
+    REMOVE_ALERT,
+    CONTACT_ERROR,
+    GET_CONTACTS,
+} from "../types.js";
 
 export default (state, action) => {
     switch (action.type) {
+        case GET_CONTACTS:
+            return {
+                ...state,
+                contacts: action.payload,
+                loading: false,
+            };
         case ADD_CONTACT:
             return {
                 ...state,
                 contacts: [...state.contacts, action.payload],
+                loading: false,
             };
         case DELETE_CONTACT:
             return {
                 ...state,
                 contacts: state.contacts.filter(
-                    (contact) => contact.id !== action.payload
+                    (contact) => contact["_id"] !== action.payload
                 ),
             };
         case SET_CURRENT:
@@ -38,6 +49,7 @@ export default (state, action) => {
                 contacts: state.contacts.map((contact) =>
                     contact.id === action.payload.id ? action.payload : contact
                 ),
+                loading: false,
             };
         case FILTER_CONTACTS:
             return {
@@ -46,14 +58,17 @@ export default (state, action) => {
                     const regex = new RegExp(`${action.payload}`, "gi");
                     return (
                         contact.name.match(regex) || contact.email.match(regex)
-                    ); 
+                    );
                 }),
+                loading: false,
             };
         case CLEAR_FILTER:
             return {
                 ...state,
                 filtered: null,
             };
+        case CONTACT_ERROR:
+            return { ...state, error: action.payload };
 
         default:
             return state;
